@@ -1,0 +1,71 @@
+{% extends 'home.html' %}
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="container p-2">
+        <div class="col  d-flex justify-content-end">
+            <button class="btn btn-success "> <i class="fa-solid fa-floppy-disk"></i> Guardar</button> &nbsp;
+            <a href="{% url 'clientes' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
+        </div>
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="">Nombre</label>
+
+            </div>
+            <div class="col-4">
+                {{form.nombre}}
+            </div>
+            <div class="col-2">
+                <label for="">Apellido</label>
+
+            </div>
+            <div class="col-4">
+                {{form.apellido}}
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="">Documento</label>
+
+            </div>
+            <div class="col-4">
+                {{form.documento}}
+            </div>
+            <div class="col-2">
+                <label for="">Direccion</label>
+
+            </div>
+            <div class="col-4">
+                {{form.direccion}}
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="">Correo</label>
+
+            </div>
+            <div class="col-4">
+                {{form.correo}}
+            </div>
+            <div class="col-2">
+                <label for="">Telefono</label>
+
+            </div>
+            <div class="col-4">
+                {{form.telefono}}
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="">Observacion</label>
+
+            </div>
+            <div class="col-4">
+                {{form.observacion}}
+            </div>
+            
+        </div>
+    </div>
+</form>
+{% endblock %}
