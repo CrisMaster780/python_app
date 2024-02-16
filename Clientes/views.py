@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Clientes
 from .form import ClientesForm
 from django.db import IntegrityError
+from django.core.paginator import Paginator
 from django.db.models import (
     ProtectedError,
 )
@@ -10,8 +11,15 @@ import sweetify
 
 def clientes_index(request):
     clientes_list = Clientes.objects.all().order_by("nombre")
+    paginator = Paginator(clientes_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Calcula el número de la última página
+    final_page_number = paginator.num_pages - 1
+
     template = "clientes_index.html"
-    context = {"titulo": "Clientes", "clientes": clientes_list}
+    context = {"titulo": "Clientes", "clientes": page_obj, "final_page_number": final_page_number}
 
     return render(request, template, context)
 
