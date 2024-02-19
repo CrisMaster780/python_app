@@ -60,10 +60,9 @@
             tmpl = tmpl.replace(/value="1"/, `value="${parseInt(count) + 1 - hidden_tr}"`);
             $(`#tbody-${formset_prefix_}`).append(tmpl);
             $(`#tr-${formset_prefix_}-${count}`).find('.selectpicker').selectpicker("refresh");
-            feather.replace();
             $(`#id_${formset_prefix_}-TOTAL_FORMS`).val(parseInt(count) + 1);
         }else{
-            alert('info', 'Valor Máximo 100')
+            alert('Valor Máximo 20')
         }
     });
 

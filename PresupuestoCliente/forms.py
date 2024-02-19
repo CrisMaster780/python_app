@@ -37,6 +37,7 @@ class DetallePresupuestoClienteForm(forms.ModelForm):
             "producto",
             "cantidad",
             "precio_unitario",
+            "total_linea"
         ]
         widgets = {
             "producto": forms.TextInput(
@@ -50,6 +51,9 @@ class DetallePresupuestoClienteForm(forms.ModelForm):
                 attrs={"class": "form-control ", "required": "true", "type": "number"}
             ),
             "precio_unitario": forms.TextInput(
+                attrs={"class": "form-control ", "required": "true", "type": "number"}
+            ),
+             "total_linea": forms.TextInput(
                 attrs={"class": "form-control ", "required": "true", "type": "number"}
             ),
         }

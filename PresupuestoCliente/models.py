@@ -13,3 +13,4 @@ class DetallePresupuestoCliente(models.Model):
     producto = models.CharField(max_length = 250)
     precio_unitario = models.FloatField()
     cantidad = models.PositiveIntegerField()
+    total_linea = models.FloatField()
