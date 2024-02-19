@@ -9,4 +9,5 @@ class Clientes(models.Model):
     correo =  models.CharField(max_length = 250)
     observacion =  models.CharField(max_length = 250)
     estado =  models.CharField(max_length = 250)
-    
+    def __str__(self):
+        return f'{self.nombre}  {self.apellido} - {self.documento}'

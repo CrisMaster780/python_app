@@ -22,8 +22,8 @@
                 <th scope="col">Documento</th>
                 <th scope="col">Direccion</th>
                 <th scope="col">Telefono</th>
-                <th scope="col">Opciones</th>
-            </tr>
+                <th style="text-align: right;width: 10%;" scope="col">Opciones</th>
+            </tr> 
         </thead>
         <tbody>
             {% if clientes %}
@@ -35,7 +35,7 @@
                 <td> {{cli.documento}} </td>
                 <td> {{cli.direccion}} </td>
                 <td> {{cli.telefono}} </td>
-                <td>
+                <td style="text-align: right;">
                     <a href="modificar_cliente/{{cli.id}}/" class="btn btn-ligth"><i
                             class="fa-regular fa-pen-to-square"></i></a>
                     <a href="#" class="btn btn-light btn_eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal"

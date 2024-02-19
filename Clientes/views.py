@@ -14,10 +14,7 @@ def clientes_index(request):
     paginator = Paginator(clientes_list, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
-    # Calcula el número de la última página
     final_page_number = paginator.num_pages - 1
-
     template = "clientes_index.html"
     context = {"titulo": "Clientes", "clientes": page_obj, "final_page_number": final_page_number}
 
