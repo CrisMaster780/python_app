@@ -3,6 +3,8 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from .forms import PresupuestoClienteForm, DetallePresupuestoClienteForm, DetallePresupuestoClienteFormSet
 from .models import PresupuestoCliente
+import sweetify
+
 
 def index_presupuesto(request):
     if request.method == 'POST':
@@ -15,10 +17,15 @@ def index_presupuesto(request):
                     presupuesto_cliente_instance = presupuesto_cliente_form.save()
                     detalle_presupuesto_cliente_formset.instance = presupuesto_cliente_instance
                     detalle_presupuesto_cliente_formset.save()
-                messages.success(request, 'Guardado Exitoso')
+                sweetify.toast(request, "Guardado Exitoso")
                 return redirect('presupuesto')
         except IntegrityError as e:
-            messages.error(request, 'Algunos de los datos deben ser únicos y ya existen en la base de datos.')
+            sweetify.toast(
+                    request,
+                    "Oops, Ocurrió un error al momento del guardado",
+                    icon="error",
+                    timer=3000,
+                )
     else:
         presupuesto_cliente_form = PresupuestoClienteForm()
         detalle_presupuesto_cliente_formset = DetallePresupuestoClienteFormSet(prefix='details')

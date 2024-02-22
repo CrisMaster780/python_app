@@ -1,7 +1,7 @@
 {% extends 'home.html' %}
 
 {% block content %}
-   
+
 {% if error %}
 <div class="alert alert-danger">
     <strong>Error: </strong> {{ info }}
@@ -11,35 +11,35 @@
 <div class="my-2 p-4">
     <form method="post" id="CreateForm" enctype="multipart/form-data" class="needs-validation" novalidate>
         {% csrf_token %}
-    
-        <div class="row">
-            <!-- Block Form -->
-            {% for field in presupuesto %}
-            <div class="col-6 my-2">
-    
-                <div style="width: 200px; float: left;">
-                    {{ field.label }}
-                    {% if field.field.required %}
-                    <span style="color: red;" class="required">*</span>
-                    {% endif %}
-                </div>
-    
-                <div style="width: calc(100% - 250px); float: left;">
-                    {{ field }}
-                    {% for error in field.errors %}
-                    <p style="color: red; margin-left: 0.5rem;">{{ error }}</p>
-                    {% endfor %}
-                </div>
-    
-            </div>
-            {% endfor %}
-    
-            
+
+        <div>
+            <table class="table table-borderless">
+                <tr>
+                    <th>Cliente <span style="color: red;">*</span> </th>
+                    <td>{{presupuesto.cliente}}</td>
+                    <td> <a class="btn btn-primary" target="_blank" href="{% url 'clientes' %}"><i
+                                class="fa-solid fa-address-card"></i> Registrar Cliente</a>
+
+                    </td>
+                </tr>
+                <tr>
+                    <th>Fecha</th>
+                    <td>{{presupuesto.fecha}}</td>
+                    <th style="text-align: right;">Total Presupuesto <span style="color: red;">*</span></th>
+                    <td>{{presupuesto.total_presupuesto}}</td>
+                    <td><button class="btn btn-success "> <i class="fa-solid fa-floppy-disk"></i> Guardar</button>
+                        &nbsp;
+                        <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i>
+                            Regresar</a>
+                    </td>
+                </tr>
+
+            </table>
         </div>
         <div class="row">
             <div class="col-12 my-2">
                 {% with details as formset %}
-                    {% include "includes/formset_addrow_inheader.html" %}
+                {% include "includes/formset_addrow_inheader.html" %}
                 {% endwith %}
             </div>
         </div>
@@ -47,7 +47,7 @@
 </div>
 
 <script>
-   
+
     $('.add-row').on('click', function (ev) {
         // when user clicks add-row button of formset
         let formset_prefix_ = $(this).attr('data-id');
@@ -55,48 +55,80 @@
         var max_num = $(`#id_${formset_prefix_}-MAX_NUM_FORMS`).val();
         let hidden_tr = $('#tbody-details tr:hidden').length
         max_num = parseInt(max_num) + hidden_tr;
-        if(parseInt(max_num) > parseInt(count) ){
+        if (parseInt(max_num) > parseInt(count)) {
             var tmpl = $(`#blank_row-${formset_prefix_}`).html().replace(/__prefix__/g, count);
             tmpl = tmpl.replace(/value="1"/, `value="${parseInt(count) + 1 - hidden_tr}"`);
             $(`#tbody-${formset_prefix_}`).append(tmpl);
             $(`#tr-${formset_prefix_}-${count}`).find('.selectpicker').selectpicker("refresh");
             $(`#id_${formset_prefix_}-TOTAL_FORMS`).val(parseInt(count) + 1);
-        }else{
+        } else {
             alert('Valor Máximo 20')
         }
     });
 
     function remove_row(self) {
         let tr_count = $('#tbody-details tr:visible').length
-        if(tr_count > 1){
+        if (tr_count > 1) {
             $row = $(self).closest('tr')
             $row.find('.delete-div input[type="checkbox"]').prop("checked", true);
             $row.find('select').prop('required', false);
             $row.find('input').prop('required', false);
             $row.hide()
-            $('#tbody-details tr:visible').each(function(index) {
-                $(this).find('.order').val(index+1);
-            });  
-        }else{
-            alert( 'Debe existir al menos un detalle')
+            $('#tbody-details tr:visible').each(function (index) {
+                $(this).find('.order').val(index + 1);
+                actualizarTotales();
+            });
+        } else {
+            Swal.fire({
+                icon: "warning",
+                title: "Oops...",
+                text: "Debe existir al menos un detalle!",
+            });
         }
     }
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $(`#table-{{ details.prefix }} th:eq(0)`).css('width', '20%');
         $(`#table-{{ details.prefix }} th:eq(1)`).css('width', '5%');
         $(`#table-{{ details.prefix }} th:eq(2)`).css('width', '5%');
-        $(`#table-{{ details.prefix }} th:eq(3)`).css('width', '3%');
+        $(`#table-{{ details.prefix }} th:eq(3)`).css('width', '5%');
+        $(`#table-{{ details.prefix }} th:eq(4)`).css('width', '2%');
+
+
+
+        // Utiliza el manejo de eventos delegados para manejar filas agregadas dinámicamente
+        $('#tbody-details').on('input', '.pre_unitario', function () {
+            actualizarTotales();
+        });
+
+        $('#tbody-details').on('input', '.cantidad', function () {
+            actualizarTotales();
+        });
+
     });
 
-    
+    // Función para actualizar los totales
+    function actualizarTotales() {
+        let totalPresupuesto = 0;
 
+        // Itera sobre cada fila del detalle y suma los totales
+        $('#tbody-details tr:visible').each(function () {
+            let $row = $(this);
+            let precioUnitario = parseFloat($row.find('.pre_unitario').val()) || 0;
+            let cantidad = parseFloat($row.find('.cantidad').val()) || 0;
+            let totalLinea = precioUnitario * cantidad;
+
+            // Asigna el total de línea a su respectivo campo
+            $row.find('.total_linea').val(totalLinea.toFixed(2));
+
+            totalPresupuesto += totalLinea;
+        });
+
+        // Asigna el total al campo total_presupuesto
+        $('.total_presupuesto').val(totalPresupuesto.toFixed(2));
+    }
 
 </script>
 
-    
+
 {% endblock %}
-
-
-
-
