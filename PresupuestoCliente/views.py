@@ -1,12 +1,25 @@
 from django.shortcuts import render, redirect
 from django.db import IntegrityError, transaction
 from django.contrib import messages
+from django.core.paginator import Paginator
+
 from .forms import PresupuestoClienteForm, DetallePresupuestoClienteForm, DetallePresupuestoClienteFormSet
 from .models import PresupuestoCliente
 import sweetify
 
 
 def index_presupuesto(request):
+    presupuesto_list = PresupuestoCliente.objects.all().order_by("id")
+    paginator = Paginator(presupuesto_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    final_page_number = paginator.num_pages - 1
+    template = "index_presupuesto.html"
+    context = {"titulo": "Presupuestos", "presupuesto": page_obj, "final_page_number": final_page_number}
+
+    return render(request, template, context)
+
+def crearPresupuesto(request):
     if request.method == 'POST':
         presupuesto_cliente_form = PresupuestoClienteForm(request.POST)
         detalle_presupuesto_cliente_formset = DetallePresupuestoClienteFormSet(request.POST, prefix='details')
@@ -35,5 +48,5 @@ def index_presupuesto(request):
         'details': detalle_presupuesto_cliente_formset,
         'titulo': 'Presupuesto Cliente',
     }
-    return render(request, 'index.html', context)
+    return render(request, 'crearPresupuesto.html', context)
 

@@ -1,0 +1,116 @@
+{% extends 'home.html' %}
+{% block content %}
+
+<div class="p-4">
+    <div class="col d-flex justify-content-end">
+
+        <a href="{%url 'crear_presupuesto'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo Presupuesto</a>
+        &nbsp;
+        <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
+    </div>
+    <table class="table table-sm table-hover">
+        <div class="col-md-4 mb-3 d-flex justify-content-end">
+            <input type="text" class="form-control text-center" id="buscarCliente"
+                placeholder="Ingrese el valor a Buscar">
+
+        </div>
+        <thead>
+            <tr>
+                <th scope="col">Codigo</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Documento</th>
+                <th scope="col">Total Presupuesto</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Estado</th>
+
+                
+                
+                <th style="text-align: right;width: 10%;" scope="col">Opciones</th>
+            </tr> 
+        </thead>
+        <tbody>
+            {% if presupuesto %}
+            {% for pre in presupuesto %}
+            <tr>
+              
+                <td> {{pre.id}} </td>
+                <td> {{pre.cliente.nombre}} </td>
+                <td> {{pre.cliente.documento}} </td>
+                <td> {{pre.total_presupuesto}} </td>
+                <td> {{pre.fecha|date:'d-M-Y'}} </td>
+               
+                <td style="text-align: right;">
+                    <a href="modificar_cliente/{{cli.id}}/" class="btn btn-ligth"><i
+                            class="fa-regular fa-pen-to-square"></i></a>
+                   
+
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr style="background-color: gainsboro;text-align: center;">
+                <td colspan="7">Sin Registros</td>
+            </tr>
+            {% endif %}
+        </tbody>
+
+    </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if presupuesto.has_previous %}
+                {% if clientes.number > 2 %}
+                    <a class="btn btn-primary" href="?page=1">&laquo; Principio</a>
+                {% endif %}
+                <a class="btn btn-primary" href="?page={{presupuesto.previous_page_number}}"><i class="fa-solid fa-arrow-left"></i> Anterior</a>
+            {% endif %}
+    
+            <span class="current">
+                P&aacute;gina {{presupuesto.number}} de {{presupuesto.paginator.num_pages}}.
+            </span>
+    
+            {% if presupuesto.has_next %}
+                <a class="btn btn-primary" href="?page={{presupuesto.next_page_number}}">Siguiente <i class="fa-solid fa-arrow-right"></i></a>
+                {% if presupuesto.number < final_page_number or not presupuesto.has_next %}
+                    <a class="btn btn-primary" href="?page={{ final_page_number }}">Final &raquo;</a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+    
+    
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Esta Seguro de Eliminar este Cliente?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> <i class="fa-solid fa-ban"></i>
+                    Cancelar</button>
+                <button type="button" id="eliminar" class="btn btn-danger"><i class="fa-solid fa-eraser"></i>
+                    Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var eliminarBtn = $('#eliminar');
+        eliminarBtn.on('click', function () {
+            var dataId = $('.btn_eliminar').data('id');
+            var eliminarUrl = `eliminar_cliente/` + dataId + `/`;
+            window.location.href = eliminarUrl;
+        });
+    });
+</script>
+
+
+{% endblock %}

@@ -5,6 +5,7 @@ class PresupuestoCliente(models.Model):
     cliente =  models.ForeignKey(Clientes, on_delete = models.PROTECT)
     fecha = models.DateTimeField(blank = True, null = True)
     total_presupuesto = models.FloatField()
+    estado_presupuesto = models.CharField(max_length=1)
     estado = models.BooleanField(default = True)
 
 
