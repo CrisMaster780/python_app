@@ -10,6 +10,22 @@ from Clientes.models import Clientes
 from django.forms import inlineformset_factory
 import datetime
 
+class CustomNumberInput(forms.widgets.NumberInput):
+    template_name = 'custom_number_input.html'
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['attrs']['step'] = '1'  # Configura el paso para que no permita decimales
+        return context
+
+class TotalPresupuestoWidget(CustomNumberInput):
+    def render(self, name, value, attrs=None, **kwargs):
+        rendered = super().render(name, value, attrs, **kwargs)
+        return rendered + ' |'  # Agrega el separador de miles al final
+
+    def format_value(self, value):
+        formatted_value = super().format_value(value)
+        return formatted_value.replace(',', '|')
 
 class PresupuestoClienteForm(forms.ModelForm):
 

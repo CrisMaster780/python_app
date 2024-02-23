@@ -93,10 +93,6 @@
         $(`#table-{{ details.prefix }} th:eq(2)`).css('width', '5%');
         $(`#table-{{ details.prefix }} th:eq(3)`).css('width', '5%');
         $(`#table-{{ details.prefix }} th:eq(4)`).css('width', '2%');
-
-
-
-        // Utiliza el manejo de eventos delegados para manejar filas agregadas dinámicamente
         $('#tbody-details').on('input', '.pre_unitario', function () {
             actualizarTotales();
         });
@@ -111,21 +107,15 @@
     function actualizarTotales() {
         let totalPresupuesto = 0;
 
-        // Itera sobre cada fila del detalle y suma los totales
         $('#tbody-details tr:visible').each(function () {
             let $row = $(this);
             let precioUnitario = parseFloat($row.find('.pre_unitario').val()) || 0;
             let cantidad = parseFloat($row.find('.cantidad').val()) || 0;
             let totalLinea = precioUnitario * cantidad;
-
-            // Asigna el total de línea a su respectivo campo
-            $row.find('.total_linea').val(totalLinea.toFixed(2));
-
+            $row.find('.total_linea').val(totalLinea);
             totalPresupuesto += totalLinea;
         });
-
-        // Asigna el total al campo total_presupuesto
-        $('.total_presupuesto').val(totalPresupuesto.toFixed(2));
+        $('.total_presupuesto').val(totalPresupuesto);
     }
 
 </script>
