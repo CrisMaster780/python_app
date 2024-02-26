@@ -8,7 +8,7 @@
         &nbsp;
         <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
     </div>
-    <table class="table table-sm table-hover">
+    <table class="table table-sm  ">
         <div class="col-md-4 mb-3 d-flex justify-content-end">
             <input type="text" class="form-control text-center" id="buscarCliente"
                 placeholder="Ingrese el valor a Buscar">
@@ -31,18 +31,28 @@
         <tbody>
             {% if presupuesto %}
             {% for pre in presupuesto %}
-            <tr>
+            <tr style="background-color: {% if pre.estado_presupuesto == 'P' %}#055F83{% elif pre.estado_presupuesto == 'C' %}#0D7941{% elif pre.estado_presupuesto == 'D' %}#830F05{% endif %};color:white;">
               
                 <td> {{pre.id}} </td>
                 <td> {{pre.cliente.nombre}} </td>
                 <td> {{pre.cliente.documento}} </td>
-                <td> {{pre.total_presupuesto}} </td>
+                <td>{{ pre.total_presupuesto|floatformat:"0" }}</td>
+
                 <td> {{pre.fecha|date:'d-M-Y'}} </td>
+                <td>
+                    {% if pre.estado_presupuesto == 'P' %}
+                      Pendiente
+                    {% elif pre.estado_presupuesto == 'C' %}
+                      Confirmado
+                    {% elif pre.estado_presupuesto == 'D' %}
+                      Anulado
+                    {% endif %}
+                  </td>
+                  
                
                 <td style="text-align: right;">
-                    <a href="modificar_cliente/{{cli.id}}/" class="btn btn-ligth"><i
-                            class="fa-regular fa-pen-to-square"></i></a>
-                   
+                    <a href="detallePresupuesto/{{pre.id}}/" title="Ver Detalles del Presupuesto" class="btn btn-ligth"><i class="fa-solid fa-eye" style="color: #f2f2f2;"></i></a>
+                    <a href="modificar_cliente/{{cli.id}}/" title="Editar Estado del Presupuesto" class="btn btn-ligth"><i class="fa-solid fa-pen-to-square" style="color: #f7f7f7;"></i></a>
 
                 </td>
             </tr>

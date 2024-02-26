@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect , get_object_or_404
 from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.core.paginator import Paginator
-
+from .models import DetallePresupuestoCliente
 from .forms import PresupuestoClienteForm, DetallePresupuestoClienteForm, DetallePresupuestoClienteFormSet
 from .models import PresupuestoCliente
 import sweetify
@@ -50,3 +50,13 @@ def crearPresupuesto(request):
     }
     return render(request, 'crearPresupuesto.html', context)
 
+def detallePresupuesto(request, id):
+    detalles = DetallePresupuestoCliente.objects.filter(presupuesto_id=id)
+    presupuesto = get_object_or_404(PresupuestoCliente, id=id)
+    context = {
+        'detalles': detalles,
+        'presupuesto': presupuesto, 
+        'titulo': 'Detalle Presupuesto Cliente',
+    }
+    return render(request, 'detallePresupuesto.html', context)
+    
