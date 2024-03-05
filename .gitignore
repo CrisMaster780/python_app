@@ -3,4 +3,6 @@ _pycache_
 /_pycache_/
 PresupuestoCliente/__pycache__/
 PresupuestoCliente/migrations/__pycache__/
+Clientes/__pycache__/
+Clientes/migrations/__pycache__/
 db.sqlite3

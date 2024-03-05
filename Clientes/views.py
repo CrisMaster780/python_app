@@ -85,7 +85,7 @@ def eliminar_cliente(request, id):
         related_models = [
             obj.related_model._meta.verbose_name_plural for obj in e.protected_objects
         ]
-        message = f'El registro no puede ser eliminado, porque está siendo utilizado en la entidad: <li>{"<li>".join(related_models)}'
-        sweetify.toast(request, message, icon="error", timer=3000)
+        message = f'El registro no puede ser eliminado, porque está siendo utilizado en la entidad: <b> <li>{"<li>".join(str(model) for model in related_models)}</b>'
+        sweetify.toast(request, message, icon="error", timer=5000)
 
     return redirect("clientes")

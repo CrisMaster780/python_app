@@ -23,7 +23,7 @@
                 <th scope="col">Direccion</th>
                 <th scope="col">Telefono</th>
                 <th style="text-align: right;width: 10%;" scope="col">Opciones</th>
-            </tr> 
+            </tr>
         </thead>
         <tbody>
             {% if clientes %}
@@ -57,59 +57,72 @@
     <div class="pagination">
         <span class="step-links">
             {% if clientes.has_previous %}
-                {% if clientes.number > 2 %}
-                    <a class="btn btn-primary" href="?page=1">&laquo; Principio</a>
-                {% endif %}
-                <a class="btn btn-primary" href="?page={{clientes.previous_page_number}}"><i class="fa-solid fa-arrow-left"></i> Anterior</a>
+            {% if clientes.number > 2 %}
+            <a class="btn btn-primary" href="?page=1">&laquo; Principio</a>
             {% endif %}
-    
+            <a class="btn btn-primary" href="?page={{clientes.previous_page_number}}"><i
+                    class="fa-solid fa-arrow-left"></i> Anterior</a>
+            {% endif %}
+
             <span class="current">
                 P&aacute;gina {{clientes.number}} de {{clientes.paginator.num_pages}}.
             </span>
-    
+
             {% if clientes.has_next %}
-                <a class="btn btn-primary" href="?page={{clientes.next_page_number}}">Siguiente <i class="fa-solid fa-arrow-right"></i></a>
-                {% if clientes.number < final_page_number or not clientes.has_next %}
-                    <a class="btn btn-primary" href="?page={{ final_page_number }}">Final &raquo;</a>
+            <a class="btn btn-primary" href="?page={{clientes.next_page_number}}">Siguiente <i
+                    class="fa-solid fa-arrow-right"></i></a>
+            {% if clientes.number < final_page_number or not clientes.has_next %} <a class="btn btn-primary"
+                href="?page={{ final_page_number }}">Final &raquo;</a>
                 {% endif %}
-            {% endif %}
+                {% endif %}
         </span>
     </div>
-    
-    
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Esta Seguro de Eliminar este Cliente?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> <i class="fa-solid fa-ban"></i>
-                    Cancelar</button>
-                <button type="button" id="eliminar" class="btn btn-danger"><i class="fa-solid fa-eraser"></i>
-                    Eliminar</button>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminar Cliente</h5>
+                </div>
+                <div class="modal-body">
+                    Esta Seguro de Eliminar este Cliente?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"> <i
+                            class="fa-solid fa-ban"></i>
+                        Cancelar</button>
+                    <button type="button "  id="eliminar" class="btn btn-danger"><i class="fa-solid fa-eraser"></i>
+                        Eliminar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    $(document).ready(function () {
-        var eliminarBtn = $('#eliminar');
-        eliminarBtn.on('click', function () {
-            var dataId = $('.btn_eliminar').data('id');
-            var eliminarUrl = `eliminar_cliente/` + dataId + `/`;
-            window.location.href = eliminarUrl;
-        });
-    });
-</script>
+    <script>
+        
+            $('.btn_eliminar').on('click', function () {
+                $('#exampleModal').modal('show');
+            })
+            $('.cancelar').on('click', function () {
+                $('#exampleModal').modal('hide');
+            })
 
 
-{% endblock %}
+            $('#eliminar').on('click', function (e) {
+                e.preventDefault();
+                var eliminarBtn = $('#eliminar');
+                eliminarBtn.on('click', function () {
+                    var dataId = $('.btn_eliminar').data('id');
+                    var eliminarUrl = `eliminar_cliente/` + dataId + `/`;
+                    window.location.href = eliminarUrl;
+                });
+            })
+        
+    </script>
+
+
+    {% endblock %}
