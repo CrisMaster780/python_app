@@ -1,3 +1,5 @@
 _pycache_
 /migrations/
 /_pycache_/
+PresupuestoCliente/__pycache__/
+PresupuestoCliente/migrations/__pycache__/
