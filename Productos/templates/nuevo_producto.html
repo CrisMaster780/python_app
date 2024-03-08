@@ -6,75 +6,93 @@
     <div class="container p-2">
         <div class="col  d-flex justify-content-end">
             <button class="btn btn-success "> <i class="fa-solid fa-floppy-disk"></i> Guardar</button> &nbsp;
-            <a href="{% url 'clientes' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
+            <a href="{% url 'productos' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
         </div>
         <div class="row my-2">
             <div class="col-2">
-                <label for="">Nombre</label>
+                <label for="">Descripci&oacute;n</label>
 
             </div>
             <div class="col-4">
-                {{form.nombre}}
+                {{form.descripcion}}
             </div>
             <div class="col-2">
-                <label for="">Apellido</label>
+                <label for="">Cod. Barra</label>
 
             </div>
             <div class="col-4">
-                {{form.apellido}}
-            </div>
-        </div>
-        <div class="row my-2">
-            <div class="col-2">
-                <label for="">Documento</label>
-
-            </div>
-            <div class="col-4">
-                {{form.documento}}
-            </div>
-            <div class="col-2">
-                <label for="">Direccion</label>
-
-            </div>
-            <div class="col-4">
-                {{form.direccion}}
+                {{form.codigo_barra}}
             </div>
         </div>
         <div class="row my-2">
             <div class="col-2">
-                <label for="">Correo</label>
+                <label for="">Cod. Remitido</label>
 
             </div>
             <div class="col-4">
-                {{form.correo}}
+                {{form.codigo_remitido}}
             </div>
             <div class="col-2">
-                <label for="">Telefono</label>
+                <label for="">Precio Costo</label>
 
             </div>
             <div class="col-4">
-                {{form.telefono}}
+                {{form.precio_costo}}
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="">Precio Venta</label>
+
+            </div>
+            <div class="col-4">
+                {{form.precio_venta}}
+            </div>
+            <div class="col-2">
+                <label for="">Precio Mayorista</label>
+
+            </div>
+            <div class="col-4">
+                {{form.precio_mayorista}}
             </div>
            
             
         </div>
         <div class="row my-2">
             <div class="col-2">
-                <label for="">Fecha de Nacimiento</label>
+                <label for="">Existencia</label>
 
             </div>
             <div class="col-4">
-                {{form.fecha_nacimiento}}
+                {{form.existencia}}
             </div>
             
         </div>
         <div class="row my-2">
             <div class="col-2">
-                <label for="">Observacion</label>
+                <label for="">Impuesto</label>
 
             </div>
             <div class="col-4">
-                {{form.observacion}}
+                {{form.impuesto}}
+            </div>
+            <div class="col-2">
+                <label for="">Clasificaci&oacute;n</label>
+
+            </div>
+            <div class="col-4">
+                {{form.clasificacion}}
+            </div>
+            
+        </div>
+
+        <div class="row my-2">
+            <div class="col-2">
+                <label for="">Unidad Medida</label>
+
+            </div>
+            <div class="col-4">
+                {{form.unidad_medida}}
             </div>
             
         </div>

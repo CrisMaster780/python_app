@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Productos
-from .form import ProductosForm
+from .models import Clasificaciones
+from .form import ClasificacionForm
 from django.db import IntegrityError
 from django.db.models import (
     ProtectedError,
@@ -8,28 +8,27 @@ from django.db.models import (
 import sweetify
 
 
-def productos_index(request):
-    productos_list = Productos.objects.all().order_by("id")
+def clasificacion_index(request):
+    clasificaciones_list = Clasificaciones.objects.all().order_by("id")
 
-    template = "Productos.html"
-    context = {"title": "Productos", "productos": productos_list}
+    template = "Clasificaciones.html"
+    context = {"title": "Clasificaciones", "clasificaciones": clasificaciones_list}
 
     return render(request, template, context)
 
 
-
-def nuevo_producto(request):
+def nueva_clasificacion(request):
     if request.method == "GET":
-        producto_form = ProductosForm()
-        template = "nuevo_producto.html"
-        context = {"title": "Nuevo Impuesto", "form": producto_form}
+        clasificacion_form = ClasificacionForm()
+        template = "nueva_clasificacion.html"
+        context = {"title": "Nuevo Impuesto", "form": clasificacion_form}
 
         return render(request, template, context)
     elif request.method == "POST":
-        producto_form = ProductosForm(request.POST)
-        if producto_form.is_valid():
+        clasificacion_form = ClasificacionForm(request.POST)
+        if clasificacion_form.is_valid():
             try:
-                producto_form.save()
+                clasificacion_form.save()
                 sweetify.toast(request, "Guardado Exitoso")
             except:
                 sweetify.toast(
@@ -45,10 +44,7 @@ def nuevo_producto(request):
                 icon="error",
                 timer=3000,
             )
-        return redirect("productos")
-
-""" 
-
+        return redirect("clasificaciones")
 
 
 def modificar_clasificacion(request, id):
@@ -89,4 +85,3 @@ def eliminar_clasificacion(request, id):
         sweetify.toast(request, message, icon="error", timer=5000)
 
     return redirect("clasificaciones")
- """
