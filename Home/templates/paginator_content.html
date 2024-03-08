@@ -1,0 +1,47 @@
+<div class="col-auto pr-0 cs-paginator-vert">Mostrar</div>
+<div class="col-auto pr-0">
+    <form method="get">
+        <select class="selectpicker cs-srecordsview" data-width="fit" data-style="btn-primary" name="paginate_by" id="paginate_by" onchange="paginateByChange(this.form);">
+            <option value="10" {% if page_obj.paginator.per_page == 10 %}selected{% endif %}>10</option>
+            <option value="25" {% if page_obj.paginator.per_page == 25 %}selected{% endif %}>25</option>
+            <option value="50" {% if page_obj.paginator.per_page == 50 %}selected{% endif %}>50</option>
+            <option value="75" {% if page_obj.paginator.per_page == 75 %}selected{% endif %}>75</option>
+            <option value="100" {% if page_obj.paginator.per_page == 100 %}selected{% endif %}>100</option>
+        </select>
+        <input type="text" name="page" value="{{ page_obj.number }}" hidden>
+        <input type="text" name="filter" value="{{ filter }}" hidden>
+    </form>
+</div>
+
+<div class="col-auto cs-paginator-vert">registros.</div>
+<div class="col"></div>
+<div class="col-auto pr-5 cs-paginator-vert cs-dmiddletext"> Mostrando {{ page_obj.start_index }} - {{ page_obj.end_index }} de {{ page_obj.paginator.count }} registros.</div>
+<div class="col"></div>
+<div class="col-auto pr-0 cs-paginator-vert">Pág.</div>
+<div class="col-auto pr-0">
+    <form method="get">
+        <input type="text" name="paginate_by" value="{{ page_obj.paginator.per_page }}" hidden>
+        <input type="text" name="page" onkeydown="pageKeyDown(event, this.form);" class="form-control cs-ipagenumber" style="max-width: 50px" value="{{ page_obj.number }}">
+        <input type="text" name="filter" value="{{ filter }}" hidden>
+    </form>
+</div>
+<div class="col-auto cs-paginator-vert cs-dpagetext">de {{ page_obj.paginator.num_pages }}</div>
+<div class="col-auto">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}{% if page_obj.paginator.per_page %}&paginate_by={{ page_obj.paginator.per_page }}{% endif %}{% if request.GET.filter %}&filter={{ request.GET.filter }}{% endif %}" 
+        class="btn btn-primary btn-sm cs-bprevious" onclick="previousNextClick(this, event);">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+    {% else %}
+    <button type="button" class="btn btn-primary btn-sm cs-bprevious" disabled><i class="fa-solid fa-arrow-left"></i></button>
+    {% endif %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}{% if page_obj.paginator.per_page %}&paginate_by={{ page_obj.paginator.per_page }}{% endif %}{% if request.GET.filter %}&filter={{ request.GET.filter }}{% endif %}"
+        class="btn btn-primary btn-sm cs-bnext" onclick="previousNextClick(this, event);">
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+    {% else %}
+    <button type="button" class="btn btn-primary btn-sm cs-bnext" disabled><i class="fa-solid fa-arrow-right"></i></button>
+    {% endif %}
+</div>

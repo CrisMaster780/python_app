@@ -33,25 +33,7 @@
     <!-- Contenido de tu bloque -->
   {% endblock %}
 
-  <script>
-    $(document).ready(function () {
-      $('#buscarCliente').on('input', function () {
-        var textoBusqueda = $(this).val().toLowerCase();
-        $('tbody tr').each(function () {
-          var fila = $(this);
-          var contieneTexto = false;
-          fila.find('td').each(function () {
-            var contenidoCelda = $(this).text().toLowerCase();
-            if (contenidoCelda.includes(textoBusqueda)) {
-              contieneTexto = true;
-              return false;
-            }
-          });
-          fila.toggle(contieneTexto);
-        });
-      });
-    });
-  </script>
+  
 </body>
 
 </html>

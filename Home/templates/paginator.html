@@ -1,0 +1,56 @@
+<style>
+    .cs-paginator-card-body {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .cs-paginator-vert {
+        padding-top: 0.49rem;
+    }
+</style>
+
+<div class="card pr-2 my-2 mr-3 ml-3 mb-2 cs-paginator">
+    <div class="card-body cs-paginator-card-body">
+        <div class="row" id="paginator">
+            {% include 'paginator_content.html' %}
+        </div>
+    </div>
+</div>
+
+<script>
+    var paginator_submit = true;
+    
+    function paginateByChange(form) {
+        if (paginator_submit) {
+            form.submit()
+        } else {
+            paginatorEvent($(form).serialize());
+        }
+    }
+    function pageKeyDown(event, form) {
+        if (event.keyCode == 13) {
+            if (paginator_submit) {
+                form.submit(); 
+                return false; 
+            } else {
+                paginatorEvent($(form).serialize());
+            }
+        }  
+    }
+    function previousNextClick(self, event) {
+        event.preventDefault();
+        var href = self.getAttribute('href');
+        if (paginator_submit) {
+            window.location.href = href;
+        } else {
+            paginatorEvent(href.substring(1));
+        }
+    }
+    function paginatorEvent(params) {
+        if (typeof paginatorSubmit === 'function') {
+            paginatorSubmit(params);
+        } else {
+            console.log('La función paginatorSubmit no está definida.');
+        }
+    }
+</script>

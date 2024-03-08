@@ -8,14 +8,17 @@
             </div>
 
             <div class="col d-flex p-2 justify-content-end">
-                <input type="text" class="form-control mr-2 w-50 text-center" id="buscarCliente"
-                placeholder="Ingrese el valor a Buscar">
+                <form class="mr-2 w-50"  method="get">
+                    <input type="text" class="form-control   text-center" id="buscarCliente" name="filter"
+                        placeholder="Ingrese el valor a Buscar">
+                </form>
 
-                <a href="{%url 'nuevo_producto'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo Producto</a>
+                <a href="{%url 'nuevo_producto'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo
+                    Producto</a>
                 &nbsp;
                 <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
             </div>
-           
+
 
         </div>
     </div>
@@ -24,44 +27,49 @@
 
 
 
-<div class=" pr-2 my-2 mr-3  pl-3 ml-3 mb-2">
+<div class=" pr-3  pl-3 ml-0 mb-2">
     <table class="table table-sm table-bordered">
-        <thead class="table-dark">
-            <tr>
+        <thead class="table-dark ">
+            <tr class="text-center">
                 <th>Codigo</th>
                 <th>Descripci&oacute;n</th>
                 <th>Precio Costo</th>
                 <th>Precio Venta</th>
-               
+
                 <th>Existencia</th>
                 <th style="width: 8%; text-align: right;">Opciones</th>
             </tr>
         </thead>
 
         <tbody>
-            {% for prod in productos %}
-            <tr>
-                <td> {{cprodli.id}} </td>
-                <td> {{prod.descripcion}} </td>
-                <td> {{prod.precio_costo}} </td>
-                <td> {{prod.precio_venta}} </td>
-                
-                <td> {{prod.existencia}} </td>
-                <td style="text-align: right;">
-                    <a href="" class="btn btn-ligth"><i
-                            class="fa-regular fa-pen-to-square"></i></a>
-                    <a href="#" class="btn btn-light btn_eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        data-id="{{cli.id}}">
-                        <i class="fa-solid fa-trash-can"></i>
-                    </a>
+            {% for prod in page_obj %}
+                <tr class="text-center">
+                    <td> {{prod.id}} </td>
+                    <td> {{prod.descripcion}} </td>
+                    <td> {{prod.precio_costo}} </td>
+                    <td> {{prod.precio_venta}} </td>
 
-                </td>
-            </tr>
+                    <td> {{prod.existencia}} </td>
+                    <td style="text-align: right;">
+                        <a href="" class="btn btn-ligth"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <a href="#" class="btn btn-light btn_eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            data-id="{{cli.id}}">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a>
+
+                    </td>
+                </tr>
             {% endfor %}
+           
 
         </tbody>
     </table>
+    
 </div>
+
+{% include 'paginator.html' %}
+
+
 
 
 

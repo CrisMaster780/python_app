@@ -1,7 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Productos
 from .form import ProductosForm
+from django.db.models import Q, ProtectedError, Subquery, OuterRef, CharField, Value as V
+
 from django.db import IntegrityError
+from django.core.paginator import Paginator
+
 from django.db.models import (
     ProtectedError,
 )
@@ -9,12 +13,31 @@ import sweetify
 
 
 def productos_index(request):
-    productos_list = Productos.objects.all().order_by("id")
+    template_name = 'Productos.html'
+    paginate_by = 10
+    filter_value = request.GET.get('filter', '').strip()
+    paginate_by_param = request.GET.get('paginate_by', paginate_by)
 
-    template = "Productos.html"
-    context = {"title": "Productos", "productos": productos_list}
+    if filter_value:
+        queryset = Productos.objects.filter(
+            Q(descripcion__icontains=filter_value),
+            
+        )
+    else:
+        queryset = Productos.objects.filter()
 
-    return render(request, template, context)
+    paginator = Paginator(queryset, per_page=paginate_by_param)
+    page = request.GET.get('page')
+    blocks = paginator.get_page(page)
+
+    context = {
+        'page_obj': blocks,
+        'title': 'Productos',
+        'filter': filter_value,
+    }
+        
+    return render(request, template_name, context)
+
 
 
 
