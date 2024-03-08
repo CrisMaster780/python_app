@@ -41,7 +41,11 @@ INSTALLED_APPS = [
     'bootstrap4',   
     'Home',
     'Clientes',
-    'PresupuestoCliente'
+    'Productos',
+    'Impuestos',
+    'UnidadMedida',
+    'PresupuestoCliente',
+    'Clasificaciones'
 ]
 SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
 MIDDLEWARE = [

@@ -22,7 +22,7 @@ def nuevo_producto(request):
     if request.method == "GET":
         producto_form = ProductosForm()
         template = "nuevo_producto.html"
-        context = {"title": "Nuevo Impuesto", "form": producto_form}
+        context = {"title": "Nuevo Producto", "form": producto_form}
 
         return render(request, template, context)
     elif request.method == "POST":

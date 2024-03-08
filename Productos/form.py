@@ -10,11 +10,17 @@ class ProductosForm(forms.ModelForm):
             'descripcion': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
             'codigo_barra': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
             'codigo_remitido': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
-            'precio_costo': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
-            'precio_venta': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
-            'precio_mayorista': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
-            'existencia':forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
-            'impuesto': forms.Select(attrs={'class': 'form-select'}),
-            'clasificacion': forms.Select(attrs={'class': 'form-select selectpicker', 'data-live-search': 'true'}),
-            'unidad_medida': forms.Select(attrs={'class': 'form-select'}),
+            'precio_costo': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();', 'type': 'number'}),
+            'precio_venta': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();', 'type': 'number'}),
+            'precio_mayorista': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();', 'type': 'number'}),
+            'existencia':forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();' , 'type': 'number'}),
+            'impuesto': forms.Select(attrs={'class': 'form-select selectpicker w-100', 'data-live-search': 'true'}),
+            'clasificacion': forms.Select(attrs={'class': 'form-select selectpicker w-100', 'data-live-search': 'true'}),
+            'unidad_medida': forms.Select(attrs={'class': 'form-select selectpicker w-100', 'data-live-search': 'true'}),
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['impuesto'].empty_label = "Seleccione el Impuesto"
+        self.fields['clasificacion'].empty_label = "Seleccione la Clasificacion"
+        self.fields['unidad_medida'].empty_label = "Seleccione la Unidad de Medida"
+        
