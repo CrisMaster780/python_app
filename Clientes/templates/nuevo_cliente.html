@@ -12,7 +12,7 @@
     
                 <div class="col d-flex p-2 justify-content-end">
                     <button class="btn btn-success "> <i class="fa-solid fa-floppy-disk"></i> Guardar</button> &nbsp;
-                    <a href="{% url 'productos' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
+                    <a href="{% url 'clientes' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
                 </div>
                
     
@@ -23,35 +23,32 @@
     <div class=" pr-2 my-2 mr-3 pl-3 ml-3 mb-2">
         <table class="table table-sm table-borderless">
             <tr>
-                <th>Descripci&oacute;n</th>
-                <td> {{form.descripcion}} </td>
-                <th>C&oacute;d. Barra</th>
-                <td> {{form.codigo_barra}} </td>
-                <th>C&oacute;d. Remitido</th>
-                <td> {{form.codigo_remitido}} </td>
+                <th>Nombre</th>
+                <td> {{form.nombre}} </td>
+                <th>Apellido</th>
+                <td> {{form.apellido}} </td>
+                <th>Documento</th>
+                <td> {{form.documento}} </td>
+                <th>R.U.C.</th>
+                <td> {{form.ruc}} </td>
+                
             </tr>
             <tr>
-                <th>Precio Costo</th>
-                <td> {{form.precio_costo}} </td>
-                <th>Precio Venta</th>
-                <td> {{form.precio_venta}} </td>
-                <th>Precio Mayorista</th>
-                <td> {{form.precio_mayorista}} </td>
+                <th>Direccion</th>
+                <td> {{form.direccion}} </td>
+                <th>Telefono</th>
+                <td> {{form.telefono}} </td>
+                <th>Correo</th>
+                <td> {{form.correo}} </td>
+                
 
             </tr>
             <tr>
-                <th>Existencia</th>
-                <td> {{form.existencia}} </td>
+                <th>Observacion</th>
+                <td> {{form.observacion}} </td>
             </tr>
 
-            <tr>
-                <th>Clasificaci&oacute;n</th>
-                <td> {{form.clasificacion}} </td>
-                <th>Impuesto</th>
-                <td> {{form.impuesto}} </td>
-                <th>Unidad de Medida</th>
-                <td> {{form.unidad_medida}} </td>
-            </tr>
+           
             
         </table>
     </div>

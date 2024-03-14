@@ -8,5 +8,6 @@ class Clientes(models.Model):
     telefono =  models.CharField(max_length = 250)
     correo = models.CharField(max_length = 250)
     documento =  models.CharField(max_length = 250)
+    ruc =  models.CharField(max_length = 250, null= True, blank = True)
     observacion = models.CharField(max_length = 250)
     estado = models.IntegerField(default = 1, null= True, blank = True)

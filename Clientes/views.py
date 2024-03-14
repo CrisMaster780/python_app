@@ -21,8 +21,7 @@ def cliente_index(request):
     if filter_value:
         queryset = Clientes.objects.filter(
             Q(documento__icontains=filter_value),
-            Q(nombre__icontains=filter_value),
-            Q(apellido__icontains=filter_value),
+            
             
         )
     else:
@@ -40,21 +39,21 @@ def cliente_index(request):
         
     return render(request, template_name, context)
 
-""" 
 
 
-def nuevo_producto(request):
+
+def nuevo_cliente(request):
     if request.method == "GET":
-        producto_form = ProductosForm()
-        template = "nuevo_producto.html"
-        context = {"title": "Nuevo Producto", "form": producto_form}
+        cliente_form = ClientesForm()
+        template = "nuevo_cliente.html"
+        context = {"title": "Nuevo Cliente", "form": cliente_form}
 
         return render(request, template, context)
     elif request.method == "POST":
-        producto_form = ProductosForm(request.POST)
-        if producto_form.is_valid():
+        cliente_form = ClientesForm(request.POST)
+        if cliente_form.is_valid():
             try:
-                producto_form.save()
+                cliente_form.save()
                 sweetify.toast(request, "Guardado Exitoso")
             except:
                 sweetify.toast(
@@ -70,21 +69,20 @@ def nuevo_producto(request):
                 icon="error",
                 timer=3000,
             )
-        return redirect("productos")
+        return redirect("clientes")
 
 
 
 
-
-def modificar_producto(request, id):
-    producto_instance = get_object_or_404(Productos, id=id)
+def modificar_cliente(request, id):
+    cliente_instance = get_object_or_404(Clientes, id=id)
     if request.method == "POST":
-        producto_form = ProductosForm(request.POST, instance=producto_instance)
+        cliente_form = ClientesForm(request.POST, instance=cliente_instance)
         try:
-            if producto_form.is_valid():
-                producto_form.save()
+            if cliente_form.is_valid():
+                cliente_form.save()
                 sweetify.toast(request, "Guardado Exitoso")
-                return redirect("productos")
+                return redirect("clientes")
         except IntegrityError as e:
             sweetify.toast(
                 request,
@@ -93,14 +91,16 @@ def modificar_producto(request, id):
                 timer=3000,
             )
     else:
-        producto_form = ProductosForm(instance=producto_instance)
-        template = "nuevo_producto.html"
-        context = {"title": "Editar Producto", "form": producto_form}
+        cliente_form = ClientesForm(instance=cliente_instance)
+        template = "nuevo_cliente.html"
+        context = {"title": "Editar Cliente", "form": cliente_form}
 
         return render(request, template, context)
 
-def eliminar_producto(request, id):
-    objeto = get_object_or_404(Productos, id=id)
+
+
+def eliminar_cliente(request, id):
+    objeto = get_object_or_404(Clientes, id=id)
 
     try:
         objeto.delete()
@@ -112,6 +112,5 @@ def eliminar_producto(request, id):
         message = 'El registro no puede ser eliminado, porque está siendo utilizado en otra Entidad'
         sweetify.toast(request, message, icon="error", timer=5000)
 
-    return redirect("productos")
+    return redirect("clientes")
 
- """

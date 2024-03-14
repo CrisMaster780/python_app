@@ -10,11 +10,11 @@
             <div class="col d-flex p-2 justify-content-end">
                 <form class="mr-2 w-50" method="get">
                     <input type="text" class="form-control   text-center" name="filter"
-                        placeholder="Ingrese el valor a Buscar y presione la tecla Enter">
+                        placeholder="Ingrese el Nro de Documentoy presione la tecla Enter">
                 </form>
 
-                <a href="{%url 'nuevo_producto'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo
-                    Producto</a>
+                <a href="{%url 'nuevo_cliente'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo
+                    Cliente</a>
                 &nbsp;
                 <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
             </div>
@@ -32,28 +32,29 @@
         <thead class="table-dark ">
             <tr class="text-center">
                 <th>Codigo</th>
-                <th>Descripci&oacute;n</th>
-                <th>Precio Costo</th>
-                <th>Precio Venta</th>
-
-                <th>Existencia</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Documento</th>
+                <th>Telefono</th>
+                <th>Correo</th>
                 <th style="width: 8%; text-align: right;">Opciones</th>
             </tr>
         </thead>
 
         <tbody>
-            {% for prod in page_obj %}
+            {% for cli in page_obj %}
             <tr class="text-center">
-                <td> {{prod.id}} </td>
-                <td> {{prod.descripcion}} </td>
-                <td> {{prod.precio_costo}} </td>
-                <td> {{prod.precio_venta}} </td>
+                <td> {{cli.id}} </td>
+                <td> {{cli.nombre}} </td>
+                <td> {{cli.apellido}} </td>
+                <td> {{cli.documento}} </td>
 
-                <td> {{prod.existencia}} </td>
+                <td> {{cli.telefono}} </td>
+                <td> {{cli.correo}} </td>
                 <td style="text-align: right;">
-                    <a href="modificar_producto/{{prod.id}}/" class="btn btn-ligth"><i class="fa-regular fa-pen-to-square"></i></a>
+                    <a href="modificar_cliente/{{cli.id}}/" class="btn btn-ligth"><i class="fa-regular fa-pen-to-square"></i></a>
                     <a href="#" class="btn btn-light btn_eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        data-id="{{prod.id}}">
+                        data-id="{{cli.id}}">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
 
@@ -79,10 +80,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Producto</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Cliente</h5>
             </div>
             <div class="modal-body">
-                Esta Seguro de Eliminar este Producto?
+                Esta Seguro de Eliminar este Cliente?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"> <i
@@ -112,7 +113,7 @@
         $('#eliminar').on('click', function (e) {
             // Obtén el data-id del botón eliminar
             var dataId = $(this).data('id');
-            var eliminarUrl = `eliminar_producto/` + dataId + `/`;
+            var eliminarUrl = `eliminar_cliente/` + dataId + `/`;
             window.location.href = eliminarUrl;
         });
     });
