@@ -1,38 +1,60 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Clientes
 from .form import ClientesForm
+from django.db.models import Q, ProtectedError, Subquery, OuterRef, CharField, Value as V
+
 from django.db import IntegrityError
 from django.core.paginator import Paginator
+
 from django.db.models import (
     ProtectedError,
 )
 import sweetify
 
 
-def clientes_index(request):
-    clientes_list = Clientes.objects.all().order_by("nombre")
-    paginator = Paginator(clientes_list, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    final_page_number = paginator.num_pages - 1
-    template = "clientes_index.html"
-    context = {"titulo": "Clientes", "clientes": page_obj, "final_page_number": final_page_number}
+def cliente_index(request):
+    template_name = 'cliente_index.html'
+    paginate_by = 10
+    filter_value = request.GET.get('filter', '').strip()
+    paginate_by_param = request.GET.get('paginate_by', paginate_by)
 
-    return render(request, template, context)
+    if filter_value:
+        queryset = Clientes.objects.filter(
+            Q(documento__icontains=filter_value),
+            Q(nombre__icontains=filter_value),
+            Q(apellido__icontains=filter_value),
+            
+        )
+    else:
+        queryset = Clientes.objects.filter()
+
+    paginator = Paginator(queryset, per_page=paginate_by_param)
+    page = request.GET.get('page')
+    blocks = paginator.get_page(page)
+
+    context = {
+        'page_obj': blocks,
+        'title': 'Clientes',
+        'filter': filter_value,
+    }
+        
+    return render(request, template_name, context)
+
+""" 
 
 
-def nuevo_cliente(request):
+def nuevo_producto(request):
     if request.method == "GET":
-        cliente_form = ClientesForm()
-        template = "nuevo_cliente.html"
-        context = {"titulo": "Nuevo Cliente", "form": cliente_form}
+        producto_form = ProductosForm()
+        template = "nuevo_producto.html"
+        context = {"title": "Nuevo Producto", "form": producto_form}
 
         return render(request, template, context)
     elif request.method == "POST":
-        cliente_form = ClientesForm(request.POST)
-        if cliente_form.is_valid():
+        producto_form = ProductosForm(request.POST)
+        if producto_form.is_valid():
             try:
-                cliente_form.save()
+                producto_form.save()
                 sweetify.toast(request, "Guardado Exitoso")
             except:
                 sweetify.toast(
@@ -48,18 +70,21 @@ def nuevo_cliente(request):
                 icon="error",
                 timer=3000,
             )
-        return redirect("clientes")
+        return redirect("productos")
 
 
-def modificar_cliente(request, id):
-    cliente_instance = get_object_or_404(Clientes, id=id)
+
+
+
+def modificar_producto(request, id):
+    producto_instance = get_object_or_404(Productos, id=id)
     if request.method == "POST":
-        cliente_form = ClientesForm(request.POST, instance=cliente_instance)
+        producto_form = ProductosForm(request.POST, instance=producto_instance)
         try:
-            if cliente_form.is_valid():
-                cliente_form.save()
+            if producto_form.is_valid():
+                producto_form.save()
                 sweetify.toast(request, "Guardado Exitoso")
-                return redirect("clientes")
+                return redirect("productos")
         except IntegrityError as e:
             sweetify.toast(
                 request,
@@ -68,15 +93,14 @@ def modificar_cliente(request, id):
                 timer=3000,
             )
     else:
-        cliente_form = ClientesForm(instance=cliente_instance)
-        template = "nuevo_cliente.html"
-        context = {"titulo": "Editar Cliente", "form": cliente_form}
+        producto_form = ProductosForm(instance=producto_instance)
+        template = "nuevo_producto.html"
+        context = {"title": "Editar Producto", "form": producto_form}
 
         return render(request, template, context)
 
-
-def eliminar_cliente(request, id):
-    objeto = get_object_or_404(Clientes, id=id)
+def eliminar_producto(request, id):
+    objeto = get_object_or_404(Productos, id=id)
 
     try:
         objeto.delete()
@@ -85,7 +109,9 @@ def eliminar_cliente(request, id):
         related_models = [
             obj.related_model._meta.verbose_name_plural for obj in e.protected_objects
         ]
-        message = f'El registro no puede ser eliminado, porque está siendo utilizado en la entidad: <b> <li>{"<li>".join(str(model) for model in related_models)}</b>'
+        message = 'El registro no puede ser eliminado, porque está siendo utilizado en otra Entidad'
         sweetify.toast(request, message, icon="error", timer=5000)
 
-    return redirect("clientes")
+    return redirect("productos")
+
+ """

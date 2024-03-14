@@ -42,11 +42,14 @@ INSTALLED_APPS = [
     'Home',
     'Clientes',
     'Productos',
-    'Impuestos',
-    'UnidadMedida',
     'PresupuestoCliente',
-    'Clasificaciones'
 ]
+"""
+'Impuestos',
+    'UnidadMedida',
+        'Clasificaciones'
+
+"""
 SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
