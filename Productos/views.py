@@ -70,19 +70,19 @@ def nuevo_producto(request):
             )
         return redirect("productos")
 
-""" 
 
 
 
-def modificar_clasificacion(request, id):
-    clasificacion_instance = get_object_or_404(Clasificaciones, id=id)
+
+def modificar_producto(request, id):
+    producto_instance = get_object_or_404(Productos, id=id)
     if request.method == "POST":
-        clasificacion_form = ClasificacionForm(request.POST, instance=clasificacion_instance)
+        producto_form = ProductosForm(request.POST, instance=producto_instance)
         try:
-            if clasificacion_form.is_valid():
-                clasificacion_form.save()
+            if producto_form.is_valid():
+                producto_form.save()
                 sweetify.toast(request, "Guardado Exitoso")
-                return redirect("clasificaciones")
+                return redirect("productos")
         except IntegrityError as e:
             sweetify.toast(
                 request,
@@ -91,15 +91,14 @@ def modificar_clasificacion(request, id):
                 timer=3000,
             )
     else:
-        clasificacion_form = ClasificacionForm(instance=clasificacion_instance)
-        template = "nueva_clasificacion.html"
-        context = {"title": "Editar Cliente", "form": clasificacion_form}
+        producto_form = ProductosForm(instance=producto_instance)
+        template = "nuevo_producto.html"
+        context = {"title": "Editar Producto", "form": producto_form}
 
         return render(request, template, context)
 
-
-def eliminar_clasificacion(request, id):
-    objeto = get_object_or_404(Clasificaciones, id=id)
+def eliminar_producto(request, id):
+    objeto = get_object_or_404(Productos, id=id)
 
     try:
         objeto.delete()
@@ -111,5 +110,5 @@ def eliminar_clasificacion(request, id):
         message = 'El registro no puede ser eliminado, porque está siendo utilizado en otra Entidad'
         sweetify.toast(request, message, icon="error", timer=5000)
 
-    return redirect("clasificaciones")
- """
+    return redirect("productos")
+
