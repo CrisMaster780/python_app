@@ -7,6 +7,3 @@ urlpatterns = [
     path('eliminar_producto/<int:id>/', eliminar_producto, name='eliminar_producto'),
   
 ]
-"""  path('nuevo_cliente/', nuevo_cliente, name='nuevo_cliente'),
-    path('modificar_cliente/<int:id>/', modificar_cliente, name='modificar_cliente'),
-    path('eliminar_cliente/<int:id>/', eliminar_cliente, name='eliminar_cliente'), """

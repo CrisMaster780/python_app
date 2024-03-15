@@ -42,12 +42,13 @@ INSTALLED_APPS = [
     'Home',
     'Clientes',
     'Productos',
+    'Clasificaciones',
     'PresupuestoCliente',
+    'Impuestos',
+    
 ]
 """
-'Impuestos',
     'UnidadMedida',
-        'Clasificaciones'
 
 """
 SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'

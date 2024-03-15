@@ -11,3 +11,5 @@ class Clientes(models.Model):
     ruc =  models.CharField(max_length = 250, null= True, blank = True)
     observacion = models.CharField(max_length = 250)
     estado = models.IntegerField(default = 1, null= True, blank = True)
+    def __str__(self):
+        return f"{self.nombre} - {self.documento}"
