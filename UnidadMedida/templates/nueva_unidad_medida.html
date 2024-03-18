@@ -1,0 +1,39 @@
+{% extends 'home.html' %}
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="card pr-2 my-2 mr-3 ml-3 mb-2">
+        <div class="card-body pr-2  py-1">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h4 class="m-0 my-2 ">{{ title }}</h4>
+                </div>
+    
+                <div class="col d-flex p-2 justify-content-end">
+                    <button class="btn btn-success "> <i class="fa-solid fa-floppy-disk"></i> Guardar</button> &nbsp;
+                    <a href="{% url 'clasificaciones' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
+                </div>
+               
+    
+            </div>
+        </div>
+    </div>
+
+    <div class=" pr-2 my-2 mr-3 pl-3 ml-3 mb-2">
+        <table class="table table-sm table-borderless">
+            <tr >
+                <th style="text-align: center; vertical-align: middle;">Descripción:</th>
+                <td > {{form.descripcion}} </td>
+                <th style="text-align: center; vertical-align: middle;">Resumido:</th>
+                <td > {{form.resumido}} </td>
+               
+               
+            </tr>
+        </table>
+    </div>
+
+
+   
+</form>
+{% endblock %}

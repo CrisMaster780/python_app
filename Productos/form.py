@@ -4,7 +4,7 @@ from .models import Productos
 class ProductosForm(forms.ModelForm):
     class Meta:
         model = Productos
-        fields = ['descripcion','codigo_barra','codigo_remitido','precio_costo','precio_venta','precio_mayorista','existencia','clasificacion', 'impuesto']
+        fields = ['descripcion','codigo_barra','codigo_remitido','precio_costo','precio_venta','precio_mayorista','existencia','clasificacion', 'impuesto','unidad_medida']
 
         widgets = {
             'descripcion': forms.TextInput(attrs={'class': 'form-control', 'onkeyup': 'this.value = this.value.toUpperCase();'}),
@@ -22,9 +22,6 @@ class ProductosForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['clasificacion'].empty_label = "Seleccione la Clasificacion"
         self.fields['impuesto'].empty_label = "Seleccione el Impuesto"
-        """
-         self.fields['unidad_medida'].empty_label = "Seleccione la Unidad de Medida" 
-        ,'impuesto','clasificacion','unidad_medida'
+        self.fields['unidad_medida'].empty_label = "Seleccione la Unidad de Medida" 
         
-        """
         

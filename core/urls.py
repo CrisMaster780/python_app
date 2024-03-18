@@ -25,7 +25,8 @@ urlpatterns = [
     path('presupuesto/', include('PresupuestoCliente.urls')),
     path('clasificacion/', include('Clasificaciones.urls')),
     path('impuestos/', include('Impuestos.urls')),
+    path('unidad_medida/', include('UnidadMedida.urls')),
    
     
 ]
-""" path('clasificacion/', include('Clasificaciones.urls')),"""
+""" """

@@ -13,8 +13,8 @@
                         placeholder="Ingrese el valor a Buscar y presione la tecla Enter">
                 </form>
 
-                <a href="{%url 'nuevo_impuesto'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo
-                    Impuesto</a>
+                <a href="{%url 'nueva_unidad_medida'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nueva
+                    Unidad de Medida</a>
                 &nbsp;
                 <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
             </div>
@@ -33,23 +33,23 @@
             <tr class="text-center">
                 <th>Codigo</th>
                 <th>Descripci&oacute;n</th>
-                <th>Porcentaje</th>
+                <th>Resumido</th>
                 
                 <th style="width: 8%; text-align: right;">Opciones</th>
             </tr>
         </thead>
 
         <tbody>
-            {% for imp in page_obj %}
+            {% for uni in page_obj %}
             <tr class="text-center">
-                <td> {{imp.id}} </td>
-                <td> {{imp.descripcion}} </td>
-                <td> {{imp.porcentaje}} </td>
+                <td> {{uni.id}} </td>
+                <td> {{uni.descripcion}} </td>
+                <td> {{uni.resumido}} </td>
                 
                 <td style="text-align: right;">
-                    <a href="modificar_impuesto/{{imp.id}}/" class="btn btn-ligth"><i class="fa-regular fa-pen-to-square"></i></a>
+                    <a href="modificar_unidad_medida/{{uni.id}}/" class="btn btn-ligth"><i class="fa-regular fa-pen-to-square"></i></a>
                     <a href="#" class="btn btn-light btn_eliminar" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        data-id="{{imp.id}}">
+                        data-id="{{uni.id}}">
                         <i class="fa-solid fa-trash-can"></i>
                     </a>
 
@@ -75,10 +75,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Eliminar Impuesto</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Unidad de Medida</h5>
             </div>
             <div class="modal-body">
-                Esta Seguro de Eliminar este Impuesto?
+                Esta Seguro de Eliminar esta Unidad de Medida?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary cancelar" data-bs-dismiss="modal"> <i
@@ -108,7 +108,7 @@
         $('#eliminar').on('click', function (e) {
             // Obtén el data-id del botón eliminar
             var dataId = $(this).data('id');
-            var eliminarUrl = `eliminar_impuesto/` + dataId + `/`;
+            var eliminarUrl = `eliminar_unidad_medida/` + dataId + `/`;
             window.location.href = eliminarUrl;
         });
     });

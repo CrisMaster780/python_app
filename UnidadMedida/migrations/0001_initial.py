@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Impuestos',
+            name='UnidadMedida',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('descripcion', models.CharField(max_length=250)),
-                ('porcentaje', models.FloatField()),
+                ('resumido', models.CharField(max_length=250)),
                 ('estado', models.IntegerField(blank=True, default=1, null=True)),
             ],
         ),

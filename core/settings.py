@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'Clasificaciones',
     'PresupuestoCliente',
     'Impuestos',
+    'UnidadMedida',
     
 ]
 """
