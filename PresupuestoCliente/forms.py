@@ -10,35 +10,11 @@ from Clientes.models import Clientes
 from Productos.models import Productos
 from django.forms import inlineformset_factory
 import datetime
-
-
-
-class CustomNumberInput(forms.widgets.NumberInput):
-    template_name = "custom_number_input.html"
-
-    def get_context(self, name, value, attrs):
-        context = super().get_context(name, value, attrs)
-        context["widget"]["attrs"][
-            "step"
-        ] = "1"  # Configura el paso para que no permita decimales
-        return context
-
-
-class TotalPresupuestoWidget(CustomNumberInput):
-    def render(self, name, value, attrs=None, **kwargs):
-        rendered = super().render(name, value, attrs, **kwargs)
-        return rendered + " |"  # Agrega el separador de miles al final
-
-    def format_value(self, value):
-        formatted_value = super().format_value(value)
-        return formatted_value.replace(",", "|")
-
-
 class PresupuestoClienteForm(forms.ModelForm):
 
     class Meta:
         model = PresupuestoCliente
-        fields = ["cliente", "fecha", "total_presupuesto"]
+        fields = ["cliente", "fecha", "total_presupuesto", "iva_10", "iva_5", "exentas"]
         widgets = {
             "cliente": forms.Select(
                 attrs={
@@ -57,6 +33,31 @@ class PresupuestoClienteForm(forms.ModelForm):
                     "required": "",
                 }
             ),
+            "iva_10": forms.TextInput(
+                attrs={
+                    "class": "form-control iva_10",
+                    "required": "true",
+                    "type": "number",
+                    "readonly": "true",
+                }
+            ),
+            "iva_5": forms.TextInput(
+                attrs={
+                    "class": "form-control iva_5",
+                    "required": "true",
+                    "type": "number",
+                    "readonly": "true",
+                }
+            ),
+            "exentas": forms.TextInput(
+                attrs={
+                    "class": "form-control exentas",
+                    "required": "true",
+                    "type": "number",
+                    "readonly": "true",
+                }
+            )
+            
         }
 
     def __init__(self, *args, **kwargs):
@@ -72,7 +73,7 @@ class DetallePresupuestoClienteForm(forms.ModelForm):
 
     class Meta:
         model = DetallePresupuestoCliente
-        fields = ["producto", "precio_unitario", "cantidad", "total_linea"]
+        fields = ["producto", "precio_unitario","iva", "cantidad", "total_linea"]
         widgets = {
             "producto": forms.Select(
                 attrs={
@@ -84,6 +85,14 @@ class DetallePresupuestoClienteForm(forms.ModelForm):
             "precio_unitario": forms.TextInput(
                 attrs={
                     "class": "form-control pre_unitario",
+                    "required": "true",
+                    "type": "number",
+                    "readonly": "true",
+                }
+            ),
+            "iva": forms.TextInput(
+                attrs={
+                    "class": "form-control iva",
                     "required": "true",
                     "type": "number",
                     "readonly": "true",

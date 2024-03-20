@@ -27,12 +27,25 @@
                     <td>{{presupuesto.fecha}}</td>
                     <th style="text-align: right;">Total Presupuesto <span style="color: red;">*</span></th>
                     <td>{{presupuesto.total_presupuesto}}</td>
+                   
+                   
+                </tr>
+                <tr >
+                    <th >IVA 10</th>
+                    <th>{{presupuesto.iva_10}}</th>
+                    <th style="text-align: right;">IVA 5</th>
+                    <th >{{presupuesto.iva_5}}</th>
+                    <th style="text-align: right;">EXENTAS</th>
+                    <th>{{presupuesto.exentas}}</th>
+
                     <td><button class="btn btn-success "> <i class="fa-solid fa-floppy-disk"></i> Guardar</button>
                         &nbsp;
-                        <a href="{% url 'presupuesto' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i>
+                        <a href="{% url 'presupuesto' %}" class="btn btn-primary"> <i
+                                class="fa-solid fa-arrow-left"></i>
                             Regresar</a>
                     </td>
                 </tr>
+               
 
             </table>
         </div>
@@ -42,6 +55,9 @@
                 {% include "includes/formset_addrow_inheader.html" %}
                 {% endwith %}
             </div>
+           
+
+           
         </div>
     </form>
 </div>
@@ -92,27 +108,29 @@
         $(`#table-{{ details.prefix }} th:eq(1)`).css('width', '5%');
         $(`#table-{{ details.prefix }} th:eq(2)`).css('width', '5%');
         $(`#table-{{ details.prefix }} th:eq(3)`).css('width', '5%');
-        $(`#table-{{ details.prefix }} th:eq(4)`).css('width', '2%');
-        
+        $(`#table-{{ details.prefix }} th:eq(4)`).css('width', '5%');
+        $(`#table-{{ details.prefix }} th:eq(5)`).css('width', '2%');
+
 
         $('#tbody-details').on('input', '.cantidad', function () {
             actualizarTotales();
         });
 
-        $('#tbody-details').on('change', '.productos', function(){
+        $('#tbody-details').on('change', '.productos', function () {
             event.preventDefault();
             let $productoSeleccionado = $(this);
 
-            let selectedProductId = $(this).closest('tr').find('.productos option:selected').val(); 
+            let selectedProductId = $(this).closest('tr').find('.productos option:selected').val();
             console.log(selectedProductId)
             let rowIndex = $productoSeleccionado.closest('tr').index();
-    
+
             $.ajax({
                 url: '/presupuesto/obtenerPrecioUnitario/' + selectedProductId + '/',
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     if ('precio_unitario' in response) {
                         $productoSeleccionado.closest('tr').find('.pre_unitario').val(response.precio_unitario);
+                        $productoSeleccionado.closest('tr').find('.iva').val(response.iva);
                         $productoSeleccionado.closest('tr').find('.cantidad').val('');
                         $productoSeleccionado.closest('tr').find('.total_linea').val('');
                         actualizarTotales();
@@ -121,7 +139,7 @@
                         console.error("El precio unitario no está presente en la respuesta");
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error(xhr.responseText);
                 }
             });
@@ -129,23 +147,40 @@
 
     });
 
-   
-    
 
-    // Función para actualizar los totales
+
+
     function actualizarTotales() {
         let totalPresupuesto = 0;
-
+        let totalIva10 = 0;
+        let totalIva5 = 0;
+        let totalExentas = 0;
+    
         $('#tbody-details tr:visible').each(function () {
             let $row = $(this);
             let precioUnitario = parseFloat($row.find('.pre_unitario').val()) || 0;
             let cantidad = parseFloat($row.find('.cantidad').val()) || 0;
             let totalLinea = precioUnitario * cantidad;
+            let iva = parseFloat($row.find('.iva').val()) || 0;
+    
+            if (iva === 10) {
+                totalIva10 += totalLinea * 0.1;
+            } else if (iva === 5) {
+                totalIva5 += totalLinea * 0.05;
+            } else {
+                totalExentas += totalLinea;
+            }
+    
             $row.find('.total_linea').val(totalLinea);
             totalPresupuesto += totalLinea;
         });
+    
         $('.total_presupuesto').val(totalPresupuesto);
+        $('.iva_10').val(totalIva10.toFixed(2));
+        $('.iva_5').val(totalIva5.toFixed(2));
+        $('.exentas').val(totalExentas.toFixed(2));
     }
+    
 
 </script>
 

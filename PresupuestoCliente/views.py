@@ -84,7 +84,8 @@ def obtenerPrecioUnitario(request, id_producto):
     try:
         producto = Productos.objects.get(id=id_producto)
         precio_unitario = producto.precio_venta
-        data = {'precio_unitario': precio_unitario}
+        iva = producto.impuesto.porcentaje
+        data = {'precio_unitario': precio_unitario, "iva":iva}
         return JsonResponse(data)
     except Productos.DoesNotExist:
         return JsonResponse({'error': 'Producto no encontrado'}, status=404)
