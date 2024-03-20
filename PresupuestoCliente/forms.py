@@ -12,6 +12,7 @@ from django.forms import inlineformset_factory
 import datetime
 
 
+
 class CustomNumberInput(forms.widgets.NumberInput):
     template_name = "custom_number_input.html"
 

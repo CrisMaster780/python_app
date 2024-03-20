@@ -21,9 +21,9 @@
     </tr>
 </script>
 
-<table class="table table-bordered table-hover table-sm small m-0 mt-3" id="table-{{ formset.prefix }}">
+<table class="table table-bordered  table-sm small m-0 mt-3" id="table-{{ formset.prefix }}">
 
-    <thead>
+    <thead class="table-dark">
         {% for field in formset.empty_form.visible_fields %}
             {% if field.name != 'DELETE' %}
             <th>{{ field.label }} {% if field.field.required %}<span style="color: #a60000;">*</span>{% endif %}</th>
@@ -31,7 +31,7 @@
         {% endfor %}
         <th style="width:30px;">
             <button type="button" class="add-row btn btn-default btn-sm cs-btn-table" id="add_row-{{ formset.prefix }}" data-id="{{ formset.prefix }}">
-                <i class="fa-solid fa-plus"></i>
+                <i class="fa-solid fa-plus" style="color: #ffffff;"></i>
             </button>
         </th>
     </thead>
