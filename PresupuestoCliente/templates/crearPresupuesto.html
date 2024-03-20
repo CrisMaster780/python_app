@@ -1,5 +1,5 @@
 {% extends 'home.html' %}
-
+{% load tools %}
 {% block content %}
 
 {% if error %}
@@ -93,15 +93,44 @@
         $(`#table-{{ details.prefix }} th:eq(2)`).css('width', '5%');
         $(`#table-{{ details.prefix }} th:eq(3)`).css('width', '5%');
         $(`#table-{{ details.prefix }} th:eq(4)`).css('width', '2%');
-        $('#tbody-details').on('input', '.pre_unitario', function () {
-            actualizarTotales();
-        });
+        
 
         $('#tbody-details').on('input', '.cantidad', function () {
             actualizarTotales();
         });
 
+        $('#tbody-details').on('change', '.productos', function(){
+            event.preventDefault();
+            let $productoSeleccionado = $(this);
+
+            let selectedProductId = $(this).closest('tr').find('.productos option:selected').val(); 
+            console.log(selectedProductId)
+            let rowIndex = $productoSeleccionado.closest('tr').index();
+    
+            $.ajax({
+                url: '/presupuesto/obtenerPrecioUnitario/' + selectedProductId + '/',
+                method: 'GET',
+                success: function(response) {
+                    if ('precio_unitario' in response) {
+                        $productoSeleccionado.closest('tr').find('.pre_unitario').val(response.precio_unitario);
+                        $productoSeleccionado.closest('tr').find('.cantidad').val('');
+                        $productoSeleccionado.closest('tr').find('.total_linea').val('');
+                        actualizarTotales();
+                        $('#tbody-details tr').eq(rowIndex).find('.producto').selectpicker('refresh');
+                    } else {
+                        console.error("El precio unitario no está presente en la respuesta");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
     });
+
+   
+    
 
     // Función para actualizar los totales
     function actualizarTotales() {

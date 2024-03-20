@@ -7,25 +7,31 @@ from django.db.models.base import Model
 from django.forms.utils import ErrorList
 from .models import PresupuestoCliente, DetallePresupuestoCliente
 from Clientes.models import Clientes
+from Productos.models import Productos
 from django.forms import inlineformset_factory
 import datetime
 
+
 class CustomNumberInput(forms.widgets.NumberInput):
-    template_name = 'custom_number_input.html'
+    template_name = "custom_number_input.html"
 
     def get_context(self, name, value, attrs):
         context = super().get_context(name, value, attrs)
-        context['widget']['attrs']['step'] = '1'  # Configura el paso para que no permita decimales
+        context["widget"]["attrs"][
+            "step"
+        ] = "1"  # Configura el paso para que no permita decimales
         return context
+
 
 class TotalPresupuestoWidget(CustomNumberInput):
     def render(self, name, value, attrs=None, **kwargs):
         rendered = super().render(name, value, attrs, **kwargs)
-        return rendered + ' |'  # Agrega el separador de miles al final
+        return rendered + " |"  # Agrega el separador de miles al final
 
     def format_value(self, value):
         formatted_value = super().format_value(value)
-        return formatted_value.replace(',', '|')
+        return formatted_value.replace(",", "|")
+
 
 class PresupuestoClienteForm(forms.ModelForm):
 
@@ -34,11 +40,21 @@ class PresupuestoClienteForm(forms.ModelForm):
         fields = ["cliente", "fecha", "total_presupuesto"]
         widgets = {
             "cliente": forms.Select(
-                attrs={"class": "form-control selectpicker", "data-live-search": "true", "required": ""}
+                attrs={
+                    "class": "form-control selectpicker",
+                    "data-live-search": "true",
+                    "required": "",
+                }
             ),
             "fecha": forms.TextInput(attrs={"class": "form-control", "type": "date"}),
             "total_presupuesto": forms.TextInput(
-                attrs={"class": "form-control total_presupuesto", "type": "number", "readonly": "","style":"background :#1F618D;color:white", "required": ""}
+                attrs={
+                    "class": "form-control total_presupuesto",
+                    "type": "number",
+                    "readonly": "",
+                    "style": "background :#1F618D;color:white",
+                    "required": "",
+                }
             ),
         }
 
@@ -55,28 +71,46 @@ class DetallePresupuestoClienteForm(forms.ModelForm):
 
     class Meta:
         model = DetallePresupuestoCliente
-        fields = ["producto", "cantidad", "precio_unitario", "total_linea"]
+        fields = ["producto", "precio_unitario", "cantidad", "total_linea"]
         widgets = {
-            "producto": forms.TextInput(
+            "producto": forms.Select(
                 attrs={
-                    "class": "form-control",
+                    "class": "form-control selectpicker productos",
+                    "data-live-search": "true",
+                    "required": "",
+                }
+            ),
+            "precio_unitario": forms.TextInput(
+                attrs={
+                    "class": "form-control pre_unitario",
                     "required": "true",
-                    'onkeyup': 'this.value = this.value.toUpperCase();'
+                    "type": "number",
+                    "readonly": "true",
                 }
             ),
             "cantidad": forms.TextInput(
-                attrs={"class": "form-control cantidad", "required": "true", "type": "number","min":"1"}
-            ),
-            "precio_unitario": forms.TextInput(
-                attrs={"class": "form-control pre_unitario", "required": "true", "type": "number"}
+                attrs={
+                    "class": "form-control cantidad",
+                    "required": "true",
+                    "type": "number",
+                    "min": "1",
+                }
             ),
             "total_linea": forms.TextInput(
-                attrs={"class": "form-control total_linea", "required": "true", "type": "number", "readonly":"", "style":"background :#2E86C1;color:white"}
+                attrs={
+                    "class": "form-control total_linea",
+                    "required": "true",
+                    "type": "number",
+                    "readonly": "",
+                    "style": "background :#2E86C1;color:white",
+                }
             ),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["producto"].empty_label = "Seleccione el Producto"
+        self.fields["producto"].queryset = Productos.objects.all()
 
 
 class DetallePresupuestoClienteBaseFormSet(forms.BaseInlineFormSet):

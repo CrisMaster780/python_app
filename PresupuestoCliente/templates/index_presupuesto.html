@@ -1,58 +1,79 @@
 {% extends 'home.html' %}
+{% load tools %}
+
 {% block content %}
 
-<div class="p-4">
-    <div class="col d-flex justify-content-end">
 
-        <a href="{%url 'crear_presupuesto'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo Presupuesto</a>
-        &nbsp;
-        <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
-    </div>
-    <table class="table table-sm  ">
-        <div class="col-md-4 mb-3 d-flex justify-content-end">
-            <input type="text" class="form-control text-center" id="buscarCliente"
-                placeholder="Ingrese el valor a Buscar">
+<div class="card pr-2 my-2 mr-3 ml-3 mb-2">
+    <div class="card-body pr-2 pl-3 py-1">
+        <div class="row align-items-center">
+            <div class="col">
+                <h4 class="m-0 my-2">{{ title }}</h4>
+            </div>
+
+            <div class="col d-flex p-2 justify-content-end">
+                <form class="mr-2 w-50" method="get">
+                    <input type="text" class="form-control   text-center" name="filter"
+                        placeholder="Ingrese el valor a Buscar y presione la tecla Enter">
+                </form>
+
+                <a href="{%url 'crear_presupuesto'%}" class="btn btn-success"> <i class="fa-solid fa-plus"></i> Nuevo
+                    Presupuesto</a>
+                &nbsp;
+                <a href="{% url 'home' %}" class="btn btn-primary"> <i class="fa-solid fa-arrow-left"></i> Regresar</a>
+            </div>
+
 
         </div>
-        <thead>
-            <tr>
+    </div>
+</div>
+
+<div class=" pr-3  pl-3 ml-0 mb-2">
+    <table class="table table-sm table-bordered">
+
+        <thead class="table-dark ">
+            <tr class="text-center">
                 <th scope="col">Codigo</th>
                 <th scope="col">Cliente</th>
                 <th scope="col">Documento</th>
                 <th scope="col">Total Presupuesto</th>
                 <th scope="col">Fecha</th>
-                <th scope="col">Estado</th>
+                <th style="width: 7%;" scope="col">Estado</th>
 
-                
-                
-                <th style="text-align: right;width: 10%;" scope="col">Opciones</th>
-            </tr> 
+
+
+                <th style="text-align: right;width: 7%;" scope="col">Opciones</th>
+            </tr>
         </thead>
         <tbody>
-            {% if presupuesto %}
-            {% for pre in presupuesto %}
-            <tr style="background-color: {% if pre.estado_presupuesto == 'P' %}#055F83{% elif pre.estado_presupuesto == 'C' %}#0D7941{% elif pre.estado_presupuesto == 'D' %}#830F05{% endif %};color:white;">
-              
+           
+            {% if page_obj %}
+            {% for pre in page_obj %}
+            <tr
+                style="text-align: center; background-color: {% if pre.estado_presupuesto == 'P' %}#055F83{% elif pre.estado_presupuesto == 'C' %}#0D7941{% elif pre.estado_presupuesto == 'D' %}#830F05{% endif %};color:white;">
+
                 <td> {{pre.id}} </td>
                 <td> {{pre.cliente.nombre}} </td>
                 <td> {{pre.cliente.documento}} </td>
-                <td>{{ pre.total_presupuesto|floatformat:"0" }}</td>
+                <td>{{ pre.total_presupuesto|intpoint}}</td>
 
                 <td> {{pre.fecha|date:'d-M-Y'}} </td>
                 <td>
                     {% if pre.estado_presupuesto == 'P' %}
-                      Pendiente
+                    Pendiente
                     {% elif pre.estado_presupuesto == 'C' %}
-                      Confirmado
+                    Confirmado
                     {% elif pre.estado_presupuesto == 'D' %}
-                      Anulado
+                    Anulado
                     {% endif %}
-                  </td>
-                  
-               
+                </td>
+
+
                 <td style="text-align: right;">
-                    <a href="detallePresupuesto/{{pre.id}}/" title="Ver Detalles del Presupuesto" class="btn btn-ligth"><i class="fa-solid fa-eye" style="color: #f2f2f2;"></i></a>
-                    <a href="modificar_cliente/{{cli.id}}/" title="Editar Estado del Presupuesto" class="btn btn-ligth"><i class="fa-solid fa-pen-to-square" style="color: #f7f7f7;"></i></a>
+                    <a href="detallePresupuesto/{{pre.id}}/" title="Ver Detalles del Presupuesto"
+                        class="btn btn-ligth"><i class="fa-solid fa-eye" style="color: #f2f2f2;"></i></a>
+                    <a href="modificar_cliente/{{cli.id}}/" title="Editar Estado del Presupuesto"
+                        class="btn btn-ligth"><i class="fa-solid fa-pen-to-square" style="color: #f7f7f7;"></i></a>
 
                 </td>
             </tr>
@@ -65,31 +86,12 @@
         </tbody>
 
     </table>
-    <div class="pagination">
-        <span class="step-links">
-            {% if presupuesto.has_previous %}
-                {% if clientes.number > 2 %}
-                    <a class="btn btn-primary" href="?page=1">&laquo; Principio</a>
-                {% endif %}
-                <a class="btn btn-primary" href="?page={{presupuesto.previous_page_number}}"><i class="fa-solid fa-arrow-left"></i> Anterior</a>
-            {% endif %}
-    
-            <span class="current">
-                P&aacute;gina {{presupuesto.number}} de {{presupuesto.paginator.num_pages}}.
-            </span>
-    
-            {% if presupuesto.has_next %}
-                <a class="btn btn-primary" href="?page={{presupuesto.next_page_number}}">Siguiente <i class="fa-solid fa-arrow-right"></i></a>
-                {% if presupuesto.number < final_page_number or not presupuesto.has_next %}
-                    <a class="btn btn-primary" href="?page={{ final_page_number }}">Final &raquo;</a>
-                {% endif %}
-            {% endif %}
-        </span>
-    </div>
-    
-    
 
 
+   
+
+</div>
+{% include 'paginator.html' %}
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

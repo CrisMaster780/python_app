@@ -3,21 +3,41 @@ from django.db import IntegrityError, transaction
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .models import DetallePresupuestoCliente
+from django.db.models import Q, ProtectedError, Subquery, OuterRef, CharField, Value as V
+
 from .forms import PresupuestoClienteForm, DetallePresupuestoClienteForm, DetallePresupuestoClienteFormSet
 from .models import PresupuestoCliente
 import sweetify
+from django.http import JsonResponse
+from Productos.models import Productos
 
 
 def index_presupuesto(request):
-    presupuesto_list = PresupuestoCliente.objects.all().order_by("id")
-    paginator = Paginator(presupuesto_list, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    final_page_number = paginator.num_pages - 1
-    template = "index_presupuesto.html"
-    context = {"titulo": "Presupuestos", "presupuesto": page_obj, "final_page_number": final_page_number}
+    template_name = 'index_presupuesto.html'
+    paginate_by = 10
+    filter_value = request.GET.get('filter', '').strip()
+    paginate_by_param = request.GET.get('paginate_by', paginate_by)
 
-    return render(request, template, context)
+    if filter_value:
+        queryset = PresupuestoCliente.objects.filter(
+            Q(cliente__nombre__icontains=filter_value),
+            
+            
+        )
+    else:
+        queryset = PresupuestoCliente.objects.filter()
+
+    paginator = Paginator(queryset, per_page=paginate_by_param)
+    page = request.GET.get('page')
+    blocks = paginator.get_page(page)
+
+    context = {
+        'page_obj': blocks,
+        'title': 'Presupuesto',
+        'filter': filter_value,
+    }
+        
+    return render(request, template_name, context)
 
 def crearPresupuesto(request):
     if request.method == 'POST':
@@ -59,4 +79,12 @@ def detallePresupuesto(request, id):
         'titulo': 'Detalle Presupuesto Cliente',
     }
     return render(request, 'detallePresupuesto.html', context)
-    
+
+def obtenerPrecioUnitario(request, id_producto):
+    try:
+        producto = Productos.objects.get(id=id_producto)
+        precio_unitario = producto.precio_venta
+        data = {'precio_unitario': precio_unitario}
+        return JsonResponse(data)
+    except Productos.DoesNotExist:
+        return JsonResponse({'error': 'Producto no encontrado'}, status=404)

@@ -16,3 +16,5 @@ class Productos(models.Model):
     impuesto = models.ForeignKey(Impuestos, on_delete = models.PROTECT)
     unidad_medida =  models.ForeignKey(UnidadMedida, on_delete = models.PROTECT) 
     estado = models.IntegerField(default = 1, null= True, blank = True)
+    def __str__(self):
+        return f"{self.descripcion} - Cod. Barra: {self.codigo_barra}  "

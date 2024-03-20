@@ -1,5 +1,6 @@
 from django.db import models
 from Clientes.models import Clientes
+from Productos.models import Productos
 
 class PresupuestoCliente(models.Model):
     cliente =  models.ForeignKey(Clientes, on_delete = models.PROTECT)
@@ -11,7 +12,7 @@ class PresupuestoCliente(models.Model):
 
 class DetallePresupuestoCliente(models.Model):
     presupuesto = models.ForeignKey(PresupuestoCliente, on_delete= models.PROTECT)
-    producto = models.CharField(max_length = 250)
+    producto = models.ForeignKey(Productos, on_delete=models.PROTECT)
     precio_unitario = models.FloatField()
     cantidad = models.PositiveIntegerField()
     total_linea = models.FloatField()
