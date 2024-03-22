@@ -33,27 +33,24 @@
 
         <thead class="table-dark ">
             <tr class="text-center">
-                <th scope="col">Codigo</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Documento</th>
-                <th scope="col">Total Presupuesto</th>
-                <th scope="col">Fecha</th>
-                <th style="width: 7%;" scope="col">Estado</th>
-
-
-
-                <th style="text-align: right;width: 7%;" scope="col">Opciones</th>
+                <th >Codigo</th>
+                <th >Cliente</th>
+                <th >Documento</th>
+                <th  >Total Presupuesto</th>
+                <th >Fecha</th>
+                <th >Estado</th>
+                <th  style="width: 10%; text-align: right;">Opciones</th>
             </tr>
         </thead>
-        <tbody>
-           
+        <tbody >
+
             {% if page_obj %}
             {% for pre in page_obj %}
             <tr
                 style="text-align: center; background-color: {% if pre.estado_presupuesto == 'P' %}#055F83{% elif pre.estado_presupuesto == 'C' %}#0D7941{% elif pre.estado_presupuesto == 'D' %}#830F05{% endif %};color:white;">
 
                 <td> {{pre.id}} </td>
-                <td> {{pre.cliente.nombre}} </td>
+                <td> {{pre.cliente.nombre}} {{pre.cliente.apellido}} </td>
                 <td> {{pre.cliente.documento}} </td>
                 <td>{{ pre.total_presupuesto|intpoint}}</td>
 
@@ -88,7 +85,7 @@
     </table>
 
 
-   
+
 
 </div>
 {% include 'paginator.html' %}

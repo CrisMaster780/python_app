@@ -29,7 +29,7 @@ class PresupuestoClienteForm(forms.ModelForm):
                     "class": "form-control total_presupuesto",
                     "type": "number",
                     "readonly": "",
-                    "style": "background :#1F618D;color:white",
+                    "style": "background :#1F618D;color:white;text-align:center;",
                     "required": "",
                 }
             ),
@@ -38,6 +38,7 @@ class PresupuestoClienteForm(forms.ModelForm):
                     "class": "form-control iva_10",
                     "required": "true",
                     "type": "number",
+                    "style": "background :#1F618D;color:white",
                     "readonly": "true",
                 }
             ),
@@ -46,6 +47,7 @@ class PresupuestoClienteForm(forms.ModelForm):
                     "class": "form-control iva_5",
                     "required": "true",
                     "type": "number",
+                    "style": "background :#1F618D;color:white",
                     "readonly": "true",
                 }
             ),
@@ -54,6 +56,7 @@ class PresupuestoClienteForm(forms.ModelForm):
                     "class": "form-control exentas",
                     "required": "true",
                     "type": "number",
+                    "style": "background :#1F618D;color:white",
                     "readonly": "true",
                 }
             )

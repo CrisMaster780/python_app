@@ -164,7 +164,7 @@
             let iva = parseFloat($row.find('.iva').val()) || 0;
     
             if (iva === 10) {
-                totalIva10 += totalLinea * 0.1;
+                totalIva10 += totalLinea / 11;
             } else if (iva === 5) {
                 totalIva5 += totalLinea * 0.05;
             } else {
